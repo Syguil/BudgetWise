@@ -41,6 +41,10 @@ def get_transactions(db: Session = Depends(get_db)):
         }
         for t in db_transactions
     ]
+@router.get("/")
+def accueil():
+    return {"message": "Bienvenue sur BudgetWise API"}
+
 
 @router.post("/transactions")
 def add_transaction(t: TransactionCreate, db: Session = Depends(get_db)):
@@ -84,3 +88,4 @@ def delete_transaction(transaction_id: int, db: Session = Depends(get_db)):
     db.delete(transaction)
     db.commit()
     return {"message": "Transaction supprimée 🗑️"}
+
