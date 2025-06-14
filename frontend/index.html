@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>BudgetWise 💰</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <h1>BudgetWise 💰</h1>
+
+  <div>
+    <label>💸 Budget mensuel (€) : </label>
+    <input type="number" id="budget" placeholder="Ex: 1000" />
+    <button onclick="setBudget()">Définir</button>
+  </div>
+
+  <h2 id="solde">💰 Solde disponible : 0 €</h2>
 
   <form id="transaction-form">
     <input type="number" step="0.01" id="montant" placeholder="Montant (€)" required />
@@ -18,12 +26,21 @@
     <input type="text" id="categorie" placeholder="Catégorie" required />
     <input type="date" id="date" required />
     <input type="text" id="description" placeholder="Description (facultatif)" />
+    <input type="text" id="tags" placeholder="Tags (séparés par virgules)" />
     <button type="submit">Ajouter</button>
   </form>
 
   <h2>Transactions</h2>
   <ul id="transactions-list"></ul>
-    <canvas id="chart-categories" width="400" height="400"></canvas>
+
+  <h3>Dépenses par catégorie</h3>
+  <canvas id="chart-categories" width="100" height="50"></canvas>
+
+  <h3>Évolution mensuelle des dépenses</h3>
+  <canvas id="chart-mensuel" width="100" height="50"></canvas>
+
+  <h3>Répartition Revenu / Dépense</h3>
+  <canvas id="chart-type" width="100" height="50"></canvas>
 
   <script src="app.js"></script>
 </body>

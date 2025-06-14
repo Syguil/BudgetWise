@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from typing import List
@@ -10,7 +10,6 @@ from backend.database import SessionLocal
 
 router = APIRouter()
 
-# Dependency pour gérer la session DB
 def get_db():
     db = SessionLocal()
     try:
@@ -25,6 +24,10 @@ class TransactionCreate(BaseModel):
     date: datetime.date
     description: str = ""
     tags: List[str] = []
+
+@router.get("/")
+def accueil():
+    return {"message": "Bienvenue sur BudgetWise API"}
 
 @router.get("/transactions")
 def get_transactions(db: Session = Depends(get_db)):
@@ -41,10 +44,6 @@ def get_transactions(db: Session = Depends(get_db)):
         }
         for t in db_transactions
     ]
-@router.get("/")
-def accueil():
-    return {"message": "Bienvenue sur BudgetWise API"}
-
 
 @router.post("/transactions")
 def add_transaction(t: TransactionCreate, db: Session = Depends(get_db)):
@@ -60,8 +59,6 @@ def add_transaction(t: TransactionCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(t_db)
     return {"message": "Transaction enregistrée", "id": t_db.id}
-
-from fastapi import HTTPException
 
 @router.put("/transactions/{transaction_id}")
 def update_transaction(transaction_id: int, t: TransactionCreate, db: Session = Depends(get_db)):
@@ -88,4 +85,3 @@ def delete_transaction(transaction_id: int, db: Session = Depends(get_db)):
     db.delete(transaction)
     db.commit()
     return {"message": "Transaction supprimée 🗑️"}
-
